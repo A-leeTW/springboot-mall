@@ -9,12 +9,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/products") // 查詢必須是複數
+    public ResponseEntity<List<Product>> getProducts(){
+        List<Product> productList = productService.getProducts();
+
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+
+    }
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
@@ -28,7 +37,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/products") // 有使用NotNull註解，須加上 @Valid 在參數前
+    @PostMapping("/products")                    // 有使用NotNull註解，須加上 @Valid 在參數前
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
 
         Integer productId = productService.createProduct(productRequest);
@@ -39,7 +48,7 @@ public class ProductController {
 
     }
 
-    @PutMapping("/products/{productId}")
+    @PutMapping("/products/{productId}")        // 有使用NotNull註解，須加上 @Valid 在參數前
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                  @RequestBody @Valid ProductRequest productRequest){
 
