@@ -38,4 +38,24 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
 
     }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
+                                                 @RequestBody @Valid ProductRequest productRequest){
+
+        // 檢查 product 是否存在
+        Product product = productService.getProductById(productId);
+
+        if (product == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // 兩個參數，表示修改哪一個ID 以及要修改的值
+        productService.updateProduct(productId, productRequest);
+
+        Product updateProduct = productService.getProductById(productId);
+
+        // HttpStatus.OK  表示更新成功狀態碼  .body 則表示回傳數據在 body
+        return ResponseEntity.status(HttpStatus.OK).body(updateProduct);
+    }
 }

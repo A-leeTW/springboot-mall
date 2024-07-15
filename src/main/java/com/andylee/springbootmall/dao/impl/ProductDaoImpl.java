@@ -33,7 +33,7 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productId", productId);
 
 
-        // 在 query處，右鍵萬用鍵
+        // 在 query處，右鍵萬用鍵 (alt + enter)
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
         // 如果資料不為空，則顯示第一筆
@@ -73,6 +73,33 @@ public class ProductDaoImpl implements ProductDao {
         int productId = keyHolder.getKey().intValue();
 
         return productId;
+
+
+    }
+
+    @Override
+    public void updateProduct(Integer productId, ProductRequest productRequest) {
+
+        String sql = "UPDATE product SET product_name = :productName, category = :category, image_url = :imageUrl, " +
+                "price = :price, stock = :stock, description = :description , last_modified_date = :lastModifiedDate " +
+                "WHERE product_id = :productId;";
+
+        Map<String, Object> map = new HashMap<>();
+
+        // 套在sql語法中
+        map.put("productId", productId);
+
+        map.put("productName", productRequest.getProductName());
+        map.put("category", productRequest.getCategory().toString()); // enum 須注意轉成 String
+        map.put("imageUrl", productRequest.getImageUrl());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+
+        map.put("lastModifiedDate", new Date());
+
+        namedParameterJdbcTemplate.update(sql, map);
+
 
 
     }
