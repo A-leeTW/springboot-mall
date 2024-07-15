@@ -58,4 +58,13 @@ public class ProductController {
         // HttpStatus.OK  表示更新成功狀態碼  .body 則表示回傳數據在 body
         return ResponseEntity.status(HttpStatus.OK).body(updateProduct);
     }
+
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
+
+        productService.deleteProductById(productId);
+
+        return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
 }
