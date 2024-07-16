@@ -1,5 +1,7 @@
 package com.andylee.springbootmall.controller;
 
+import com.andylee.springbootmall.constant.ProductCategory;
+import com.andylee.springbootmall.dto.ProductQueryParams;
 import com.andylee.springbootmall.dto.ProductRequest;
 import com.andylee.springbootmall.model.Product;
 import com.andylee.springbootmall.service.ProductService;
@@ -17,9 +19,16 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/products") // 查詢必須是複數
-    public ResponseEntity<List<Product>> getProducts(){
-        List<Product> productList = productService.getProducts();
+    @GetMapping("/products") // 查詢必須是複數  // reuqire = false 使參數可以為 null
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+            ){
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+
+        List<Product> productList = productService.getProducts(productQueryParams);
 
         return ResponseEntity.status(HttpStatus.OK).body(productList);
 

@@ -1,6 +1,8 @@
 package com.andylee.springbootmall.service.impl;
 
+import com.andylee.springbootmall.constant.ProductCategory;
 import com.andylee.springbootmall.dao.ProductDao;
+import com.andylee.springbootmall.dto.ProductQueryParams;
 import com.andylee.springbootmall.dto.ProductRequest;
 import com.andylee.springbootmall.model.Product;
 import com.andylee.springbootmall.service.ProductService;
@@ -19,8 +21,8 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
     }
 
     @Override

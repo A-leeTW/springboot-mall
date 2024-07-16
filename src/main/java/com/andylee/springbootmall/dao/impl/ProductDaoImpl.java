@@ -1,6 +1,8 @@
 package com.andylee.springbootmall.dao.impl;
 
+import com.andylee.springbootmall.constant.ProductCategory;
 import com.andylee.springbootmall.dao.ProductDao;
+import com.andylee.springbootmall.dto.ProductQueryParams;
 import com.andylee.springbootmall.dto.ProductRequest;
 import com.andylee.springbootmall.model.Product;
 import com.andylee.springbootmall.rowmapper.ProductRowMapper;
@@ -25,12 +27,22 @@ public class ProductDaoImpl implements ProductDao {
 
     // 查詢所有商品
     @Override
-    public List<Product> getProducts() {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql ="select product_id,product_name, category, image_url, price, stock, description, " +
                 "created_date, last_modified_date " +
-                "from product";
+                "from product WHERE 1 = 1";  // where 為了下方if 判斷式加上拼接的sql
 
         Map<String, Object> map = new HashMap<>();
+
+        if (productQueryParams.getCategory() != null){
+            sql = sql + " AND category = :category"; // AND前必須留空白，防止和 1 連接
+            map.put("category", productQueryParams.getCategory().name());
+        }
+
+        if (productQueryParams.getSearch() != null){
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%"); // % 必須放在 map 裡 (Spring jdbc 限制)
+        }
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
