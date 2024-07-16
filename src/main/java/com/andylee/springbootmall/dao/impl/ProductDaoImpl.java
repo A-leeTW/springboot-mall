@@ -44,6 +44,9 @@ public class ProductDaoImpl implements ProductDao {
             map.put("search", "%" + productQueryParams.getSearch() + "%"); // % 必須放在 map 裡 (Spring jdbc 限制)
         }
 
+        // 拼接 sql 語句，必須加上空白
+        sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
+
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
         return productList;
