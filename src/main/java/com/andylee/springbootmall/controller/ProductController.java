@@ -4,7 +4,8 @@ import com.andylee.springbootmall.constant.ProductCategory;
 import com.andylee.springbootmall.dto.ProductQueryParams;
 import com.andylee.springbootmall.dto.ProductRequest;
 import com.andylee.springbootmall.model.Product;
-import com.andylee.springbootmall.service.ProductService;
+import com.andylee.springbootmall.dto.service.ProductService;
+import com.andylee.springbootmall.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products") // 查詢必須是複數  // reuqire = false 使參數可以為 null
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             // 查詢條件的　filterling
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
@@ -45,9 +46,21 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset); // offset = 跳過幾筆資料
 
+
+        // 取得 product list
         List<Product> productList = productService.getProducts(productQueryParams);
 
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        // 取得 product 總數
+        Integer total = productService.countProduct(productQueryParams);
+
+        // 將回傳值改成 json 格式
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(page);
 
     }
 

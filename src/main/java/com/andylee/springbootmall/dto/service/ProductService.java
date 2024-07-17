@@ -1,4 +1,4 @@
-package com.andylee.springbootmall.service;
+package com.andylee.springbootmall.dto.service;
 
 import com.andylee.springbootmall.dto.ProductQueryParams;
 import com.andylee.springbootmall.dto.ProductRequest;
@@ -7,6 +7,8 @@ import com.andylee.springbootmall.model.Product;
 import java.util.List;
 
 public interface ProductService {
+
+    Integer countProduct(ProductQueryParams productQueryParams);
 
     List<Product> getProducts(ProductQueryParams productQueryParams);
 

@@ -1,11 +1,10 @@
-package com.andylee.springbootmall.service.impl;
+package com.andylee.springbootmall.dto.service.impl;
 
-import com.andylee.springbootmall.constant.ProductCategory;
 import com.andylee.springbootmall.dao.ProductDao;
 import com.andylee.springbootmall.dto.ProductQueryParams;
 import com.andylee.springbootmall.dto.ProductRequest;
+import com.andylee.springbootmall.dto.service.ProductService;
 import com.andylee.springbootmall.model.Product;
-import com.andylee.springbootmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +18,11 @@ public class ProductServiceImpl implements ProductService {
 
     // Generate -> Override methods
 
+
+    @Override
+    public Integer countProduct(ProductQueryParams productQueryParams) {
+        return productDao.countProduct(productQueryParams);
+    }
 
     @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
