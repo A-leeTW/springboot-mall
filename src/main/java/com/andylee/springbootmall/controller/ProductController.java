@@ -4,7 +4,7 @@ import com.andylee.springbootmall.constant.ProductCategory;
 import com.andylee.springbootmall.dto.ProductQueryParams;
 import com.andylee.springbootmall.dto.ProductRequest;
 import com.andylee.springbootmall.model.Product;
-import com.andylee.springbootmall.dto.service.ProductService;
+import com.andylee.springbootmall.service.ProductService;
 import com.andylee.springbootmall.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,7 +50,7 @@ public class ProductController {
         // 取得 product list
         List<Product> productList = productService.getProducts(productQueryParams);
 
-        // 取得 product 總數
+        // 取得 product 總數(total)
         Integer total = productService.countProduct(productQueryParams);
 
         // 將回傳值改成 json 格式

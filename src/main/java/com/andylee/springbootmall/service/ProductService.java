@@ -1,4 +1,4 @@
-package com.andylee.springbootmall.dto.service;
+package com.andylee.springbootmall.service;
 
 import com.andylee.springbootmall.dto.ProductQueryParams;
 import com.andylee.springbootmall.dto.ProductRequest;

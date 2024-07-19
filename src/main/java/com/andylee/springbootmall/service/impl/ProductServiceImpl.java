@@ -1,9 +1,9 @@
-package com.andylee.springbootmall.dto.service.impl;
+package com.andylee.springbootmall.service.impl;
 
 import com.andylee.springbootmall.dao.ProductDao;
 import com.andylee.springbootmall.dto.ProductQueryParams;
 import com.andylee.springbootmall.dto.ProductRequest;
-import com.andylee.springbootmall.dto.service.ProductService;
+import com.andylee.springbootmall.service.ProductService;
 import com.andylee.springbootmall.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

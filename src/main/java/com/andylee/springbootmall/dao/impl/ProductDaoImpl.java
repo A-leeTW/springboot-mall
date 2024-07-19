@@ -32,16 +32,7 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
 
-        // 查詢條件
-        if (productQueryParams.getCategory() != null){
-            sql = sql + " AND category = :category"; // AND前必須留空白，防止和 1 連接
-            map.put("category", productQueryParams.getCategory().name());
-        }
-
-        if (productQueryParams.getSearch() != null){
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch() + "%"); // % 必須放在 map 裡 (Spring jdbc 限制)
-        }
+        sql = addFilteringSql(sql, map, productQueryParams);
 
         // 第三個參數表示要將 total 轉換成 Integer
         Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
@@ -58,6 +49,8 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
 
+
+        /**  用 addFilteringSql 取代
         // 查詢條件
         if (productQueryParams.getCategory() != null){
             sql = sql + " AND category = :category"; // AND前必須留空白，防止和 1 連接
@@ -68,6 +61,9 @@ public class ProductDaoImpl implements ProductDao {
             sql = sql + " AND product_name LIKE :search";
             map.put("search", "%" + productQueryParams.getSearch() + "%"); // % 必須放在 map 裡 (Spring jdbc 限制)
         }
+        **/
+
+        sql = addFilteringSql(sql, map, productQueryParams);
 
         // 排序
         // 拼接 sql 語句，必須加上空白
@@ -171,5 +167,21 @@ public class ProductDaoImpl implements ProductDao {
 
         namedParameterJdbcTemplate.update(sql, map);
 
+    }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams){
+
+        // 查詢條件 Category & Search
+        if (productQueryParams.getCategory() != null){
+            sql = sql + " AND category = :category"; // AND前必須留空白，防止和 1 連接
+            map.put("category", productQueryParams.getCategory().name());
+        }
+
+        if (productQueryParams.getSearch() != null){
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%"); // % 必須放在 map 裡 (Spring jdbc 限制)
+        }
+
+        return sql;
     }
 }
