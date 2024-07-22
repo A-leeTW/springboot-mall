@@ -169,6 +169,7 @@ public class ProductDaoImpl implements ProductDao {
 
     }
 
+    // 軟體價值在於重複使用
     private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams){
 
         // 查詢條件 Category & Search
