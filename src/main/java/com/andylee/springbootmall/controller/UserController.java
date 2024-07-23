@@ -1,5 +1,6 @@
 package com.andylee.springbootmall.controller;
 
+import com.andylee.springbootmall.dto.UserLoginRequest;
 import com.andylee.springbootmall.dto.UserRegisterRequest;
 import com.andylee.springbootmall.model.User;
 import com.andylee.springbootmall.service.UserService;
@@ -28,6 +29,15 @@ public class UserController {
         User user = userService.getUserById(userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+
+    }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
+
+        User user = userService.login(userLoginRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user); // 將成功狀態回傳在body
 
     }
 }
