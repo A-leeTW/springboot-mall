@@ -47,6 +47,27 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+
+        String sql = "SELECT user_id, email, password, created_date, last_modified_date " +
+                "FROM user WHERE email = :email;";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+
+        // 在 query處，右鍵萬用鍵 (alt + enter)
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+
+        // 如果資料不為空，則顯示第一筆
+        if (userList.size() > 0){
+            return userList.get(0);
+        }else {
+            return null;
+        }
+
+    }
+
+    @Override
     public Integer createUser(UserRegisterRequest userRegisterRequest) {
 
         String sql = "INSERT INTO user(email, password, created_date, last_modified_date) " +
